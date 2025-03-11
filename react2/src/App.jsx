@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Header from './peegi/components/Header.jsx';
-import Footer from './peegi/components/Footer';
-import Home from './peegi/Home';
-import About from './peegi/About';
-import Blog from './peegi/Blog';
+import Header from './pages/components/Header.jsx';
+import Footer from './pages/components/Footer';
+import Home from './pages/Home';
+import About from './pages/About';
+import Blog from './pages/Blog';
 
 function App() {
   return (
