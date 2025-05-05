@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Button } from "./components/button.jsx";
-import { Text } from "./components/text.jsx";
-import { Input } from "./components/input.jsx";
+import { Button } from "../../components/button.js";
+import { Text } from "../../components/text.js";
+import { Input } from "../../components/input.js";
 
 function Home() {
   // Local state for the input field
