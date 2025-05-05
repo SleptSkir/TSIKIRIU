@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Button } from "../../components/button.js";
-import { Text } from "../../components/text.js";
-import { Input } from "../../components/input.js";
+import { Button } from "../components/button.tsx";
+import { Text   } from "../components/text.tsx";
+import { Input  } from "../components/input.tsx";
+
 
 function Home() {
   // Local state for the input field
@@ -9,7 +10,7 @@ function Home() {
 
   return (
     <div className="p-4 min-h-screen">
-      <Text size="large" color="black" content="家ページ" />
+      <Text size="large" color="primary" content="家ページ" />
 
       <div className="my-4">
         <Input
