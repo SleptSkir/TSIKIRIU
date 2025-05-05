@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-
+import { Helmet } from 'react-helmet';
 interface Commission {
   id: number;
   image: string;
@@ -13,6 +13,12 @@ const CommissionCard: React.FC<{ commission: Commission }> = ({ commission }) =>
   const username = match ? match[1] : commission.link;
 
   return (
+    <>
+      <Helmet>
+        <title>Artist's comissions - List of works</title>
+        <meta name="description" content="Artist's comissions and their arts and costs" />
+        <meta name="keywords" content="comission, artist, art, order art, costs" />
+      </Helmet>
     <div className="border rounded-none overflow-hidden shadow-sm">
       <div className="w-full aspect-square bg-gray-100">
         <img src={commission.image} alt={commission.title} className="w-full h-full object-cover" />
@@ -27,6 +33,7 @@ const CommissionCard: React.FC<{ commission: Commission }> = ({ commission }) =>
         <div className="text-right font-medium text-sm">{commission.price}円</div>
       </div>
     </div>
+    </>
   );
 };
 
