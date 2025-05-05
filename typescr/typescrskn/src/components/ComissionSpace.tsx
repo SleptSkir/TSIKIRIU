@@ -1,8 +1,7 @@
-// src/components/CommissionCard.tsx
 import React from "react";
 
 export interface Commission {
-  image: string;       // <-- добавили URL картинки
+  image: string;
   title: string;
   description: string;
   price: string;
@@ -10,7 +9,6 @@ export interface Commission {
 
 const CommissionCard: React.FC<{ commission: Commission }> = ({ commission }) => (
   <div className="border rounded-lg overflow-hidden shadow-sm">
-    {/* обёртка фиксированной высоты + object-fit */}
     <div className="w-full h-48 bg-gray-100">
       <img
         src={commission.image}

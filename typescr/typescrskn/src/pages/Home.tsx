@@ -5,7 +5,6 @@ import { Input  } from "../components/input.tsx";
 
 
 function Home() {
-  // Local state for the input field
   const [inputValue, setInputValue] = useState("");
 
   return (

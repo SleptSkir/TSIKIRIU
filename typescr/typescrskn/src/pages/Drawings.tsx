@@ -1,4 +1,3 @@
-// src/pages/Drawings.tsx
 import React, { useState, useCallback } from "react";
 
 interface Commission {
