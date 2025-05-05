@@ -4,6 +4,7 @@ import Footer from './components/Footer.tsx';
 import Home from './pages/Home';
 import About from './pages/About';
 import Blog from './pages/Blog';
+import Drawings from './pages/Drawings.tsx';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/drawings" element={<Drawings />} />
             <Route path="/about" element={<About />} />
             <Route path="/blog" element={<Blog />} />
           </Routes>
