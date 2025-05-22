@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useUser } from '../context/UserContext';
 import { Helmet } from 'react-helmet';
 import { useLanguage } from '../context/LanguageContext';
 import { translations } from '../i18n';
@@ -38,6 +39,14 @@ const Drawings: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form, setForm] = useState<Omit<Commission, 'id'>>({ image: '', title: '', link: '', price: '' });
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const { user, toggleFavorite, isFavorite } = useUser();
+
+  //autolink
+  useEffect(() => {
+    if (isModalOpen && user?.role === "artist" && user.artistLink) {
+      setForm(f => ({ ...f, link: user.artistLink || '' }));
+    }
+  }, [isModalOpen, user]);
 
   useEffect(() => {
     fetch('http://localhost:4000/api/commissions')
@@ -75,11 +84,11 @@ const Drawings: React.FC = () => {
       .then(res => res.json())
       .then((newComm: Commission) => {
         setCommissions(prev => [...prev, newComm]);
-        setForm({ image: '', title: '', link: '', price: '' });
+        setForm({ image: '', title: '', link: user?.artistLink || '', price: '' }); // reset, keep link for artists
         setIsModalOpen(false);
       })
       .catch(console.error);
-  }, [form]);
+  }, [form, user]);
 
   return (
     <>
@@ -93,13 +102,18 @@ const Drawings: React.FC = () => {
       <div className="container mx-auto p-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">{t.commissions}</h2>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-none"
-          >
-            {t.add}
-          </button>
+          {user?.role === "artist" && (
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-none"
+            >
+              {t.add}
+            </button>
+          )}
         </div>
+        {user?.role !== "artist" && (
+          <div className="mb-4 text-red-500 text-sm">{t.onlyArtistCanAdd}</div>
+        )}
 
         {isModalOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -136,6 +150,7 @@ const Drawings: React.FC = () => {
                 onChange={handleChange}
                 placeholder={t.linkPlaceholder}
                 className="w-full border px-3 py-2 rounded-none mb-3"
+                readOnly={user?.role === "artist" && !!user.artistLink}
               />
               <input
                 name="price"
@@ -164,8 +179,23 @@ const Drawings: React.FC = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {commissions.map(c => (
-            <div key={c.id} onClick={() => setPreviewImage(c.image)}>
-              <CommissionCard commission={c} />
+            <div key={c.id} className="relative group">
+              <div onClick={() => setPreviewImage(c.image)}>
+                <CommissionCard commission={c} />
+              </div>
+              {user && (
+                <button
+                  onClick={() => toggleFavorite(c.id)}
+                  className={`absolute top-2 right-2 z-10 text-2xl select-none ${
+                    isFavorite(c.id) ? "text-red-500" : "text-gray-400"
+                  }`}
+                  title={isFavorite(c.id)
+                    ? (language === 'ja' ? "お気に入りから削除" : "Remove from favorites")
+                    : (language === 'ja' ? "お気に入りに追加" : "Add to favorites")}
+                >
+                  ♥
+                </button>
+              )}
             </div>
           ))}
         </div>
